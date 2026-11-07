@@ -111,3 +111,130 @@ body{font-family:var(--font-sans);background:var(--canvas);color:var(--color-tex
 .loading-logo{width:40px;height:53px;object-fit:contain}
 .settings-logo{display:block;width:32px;height:43px;object-fit:contain;margin-bottom:18px}
 .footer-logo{width:15px;height:20px;object-fit:contain}
+
+/* Shared layout polish: readable type, consistent spacing, and fluid grids. */
+:root{--color-text-muted:#586b5b}
+body{line-height:1.5}
+.btn{min-height:40px;font-size:13px;border-radius:9px}
+.icon-btn{min-width:34px;min-height:34px}
+.text-btn{font-size:13px}
+.eyebrow,.nav-label{font-size:10px;font-weight:600}
+.page-content{padding:36px clamp(24px,3vw,48px) 0}
+.welcome-line,.page-heading{margin-bottom:28px;flex-wrap:wrap}
+.welcome-line p,.page-heading p{font-size:13px;max-width:65ch}
+.sidebar{padding-top:28px}
+.nav-group button{font-size:13px;padding:11px 13px}
+.studio-switch strong,.user-profile strong{font-size:12px}
+.studio-switch small,.user-profile small{font-size:11px}
+.breadcrumb,.branch-picker select{font-size:12px}
+.panel,.stat-card,.plan-card,.trainer-card,.retreat-card{border-radius:14px;box-shadow:0 3px 14px #263f2b04}
+.stats-grid{gap:18px}
+.stat-card{padding:22px}
+.stat-top>span{font-size:12px}
+.stat-card>strong{font-size:32px;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.stat-sub{font-size:11px;line-height:1.5;flex-wrap:wrap}
+.panel-heading{padding:22px 24px 18px;flex-wrap:wrap}
+.panel-heading h2{font-size:17px}
+.panel-heading p,.period-label,.chart-legend{font-size:11px}
+.quick-grid{gap:12px;padding:4px 22px 22px}
+.quick-grid button{padding:18px 14px;border-radius:10px;background:var(--canvas)}
+.quick-grid button span{font-size:12px}
+.gentle-note{font-size:11px;line-height:1.6}
+.session-row{padding:19px 24px}
+.session-name strong{font-size:14px}
+.session-time strong,.session-trainer strong{font-size:12px}
+.session-time span,.session-name span,.session-trainer span,.capacity{font-size:11px}
+.badge{font-size:10px;padding:5px 9px;border-radius:6px}
+.mini-row strong{font-size:12px}
+.mini-row span:not(.badge){font-size:11px}
+.table-toolbar{flex-wrap:wrap;align-items:center}
+.search-box{flex:1;max-width:380px;min-height:42px;min-width:180px}
+.search-box input{font-size:13px;min-width:0}
+.toolbar-actions{flex-wrap:wrap}
+th{font-size:11px;font-weight:500;padding:14px 20px}
+td,td strong{font-size:13px}
+td{padding:18px 20px}
+td small,.table-footer,.table-footer span,.mono{font-size:11px}
+.tabs{gap:24px}
+.tabs button{font-size:13px;padding:12px 2px 15px}
+.summary-strip{flex-wrap:wrap;row-gap:12px}
+.form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.form-field>span:first-child{font-size:12px;font-weight:500}
+.form-field input:not([type=checkbox]),.form-field select,.form-field textarea{min-height:44px;font-size:14px;border-radius:8px}
+.modal-heading{align-items:flex-start;gap:16px}
+.modal-heading h2{font-size:23px;line-height:1.35}
+.modal-overlay{padding:24px;overflow-y:auto}
+.modal{max-height:calc(100dvh - 48px);border-radius:18px;padding:30px}
+.auth-links,.auth-links button,.forgot-password-row button{font-size:12px}
+.login-modal .form-actions .btn,.register-modal .form-actions .btn{width:100%}
+.landing-nav{max-width:1280px;height:96px;padding-inline:40px}
+.landing-nav nav{font-size:13px}
+.landing-hero{max-width:1240px;padding:64px 48px 88px;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px}
+.hero-copy h1{font-size:clamp(44px,4.6vw,64px);line-height:1.12;letter-spacing:-2.5px;text-wrap:balance}
+.hero-copy>p{font-size:16px;line-height:1.8}
+.hero-copy>.text-btn{font-size:12px;line-height:1.6;text-align:left}
+.hero-proof{font-size:11px}
+.floating-card{border-radius:12px;padding:16px;box-shadow:0 12px 36px #3043330d}
+.floating-card strong{font-size:12px}
+.floating-card span{font-size:10px}
+.landing-strip{gap:clamp(20px,3vw,44px);flex-wrap:wrap;font-size:12px}
+.landing-strip>span:first-child{font-size:9px}
+.landing-section{padding:88px 40px}
+.landing-section h2,.how-section h2{font-size:34px;line-height:1.25;text-wrap:balance}
+.feature-grid{gap:20px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.feature-card{padding:28px 24px;background:#fff;border-radius:14px}
+.feature-card h3{font-size:16px}
+.feature-card p,.how-section p{font-size:13px}
+.landing-about p{font-size:14px;color:var(--muted);max-width:530px}
+.landing-footer,.landing-footer button{font-size:11px}
+.landing-footer>div{flex-wrap:wrap;justify-content:center}
+@media(min-width:641px) and (max-width:1100px){
+ .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .overview-main,.bottom-grid{grid-template-columns:1fr}
+ .plans-grid,.trainer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .landing-hero{gap:16px;padding-inline:32px}
+ .hero-art{transform:scale(.8);transform-origin:center}
+}
+@media(max-width:640px){
+ .page-content{padding:24px 18px 0}
+ .topbar{padding-inline:18px}
+ h1,.welcome-line h1{font-size:26px;letter-spacing:-.8px}
+ .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .stat-card{padding:16px}
+ .stat-top{align-items:flex-start}
+ .stat-top>span{font-size:11px}
+ .stat-card>strong{font-size:27px}
+ .stat-sub{font-size:10px}
+ .panel-heading,.session-row{padding:18px}
+ .session-row{flex-wrap:wrap;gap:10px}
+ .session-name{min-width:120px}
+ .session-row>.badge{font-size:10px}
+ .session-row>.icon-btn{margin-left:auto}
+ .quick-grid{padding:0 18px 18px}
+ .table-toolbar{padding:16px;gap:12px}
+ .search-box{max-width:none;width:100%}
+ .toolbar-actions{width:100%}
+ .table-footer{flex-wrap:wrap;gap:8px}
+ .form-grid{grid-template-columns:minmax(0,1fr)}
+ .modal-overlay{padding:12px}
+ .modal,.register-modal{padding:24px 20px;max-height:calc(100dvh - 24px)}
+ .modal-heading h2{font-size:22px}
+ .landing-nav{padding-inline:18px;height:80px}
+ .landing-hero{grid-template-columns:minmax(0,1fr);padding:36px 24px 24px;gap:12px}
+ .hero-copy h1{font-size:clamp(39px,10.5vw,56px);letter-spacing:-1.8px}
+ .hero-copy>p{font-size:14px;margin:22px 0 26px}
+ .hero-art{height:390px;width:100%;max-width:380px;justify-self:center;transform:scale(.82);transform-origin:center}
+ .hero-proof{font-size:10px}
+ .landing-section{padding:56px 24px}
+ .landing-section h2,.how-section h2{font-size:28px}
+ .feature-grid{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:28px}
+ .feature-card{padding:24px}
+ .feature-card>svg{margin-bottom:16px}
+ .feature-card h3{font-size:17px}
+ .feature-card p{font-size:13px}
+ .landing-strip{gap:16px 24px;font-size:11px;padding:24px}
+ .landing-about h2{font-size:28px}
+ .landing-footer{padding:26px 20px;gap:16px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
