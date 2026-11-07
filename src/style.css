@@ -102,3 +102,12 @@ body{font-family:var(--font-sans);background:var(--canvas);color:var(--color-tex
 @media(max-width:640px){.register-modal{padding:23px}.register-modal .form-grid{gap:16px}}
 
 .register-modal .password-field{grid-column:1/-1}
+
+.about-logo{display:block;width:40px;height:53px;object-fit:contain;margin:0 auto 18px}
+
+.hero-copy>p{font-family:var(--font-sans);font-style:normal;font-weight:400}
+
+.about-logo{display:block;width:40px;height:53px;object-fit:contain;margin:0 auto 18px}
+.loading-logo{width:40px;height:53px;object-fit:contain}
+.settings-logo{display:block;width:32px;height:43px;object-fit:contain;margin-bottom:18px}
+.footer-logo{width:15px;height:20px;object-fit:contain}
