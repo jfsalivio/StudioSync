@@ -9,13 +9,14 @@ import {pool,rows,tx,fail,audit} from './db.js';
 import {defaults,owned,utc,checkSpace,book,bookingAction,ledger,invoice,memberScope,notify,promote} from './domain.js';
 import {deliverReminders} from './reminders.js';
 import {promoteRetreat} from './retreats.js';
+import {passwordError} from './registration-validation.js';
 const app=express();app.use(helmet({contentSecurityPolicy:false}));app.use(express.json({limit:'2mb'}));app.use(cookieParser());
 app.use('/api',(req,res,next)=>{if(!['GET','HEAD','OPTIONS'].includes(req.method)&&req.headers.origin&&req.headers.origin!==process.env.APP_ORIGIN&&req.headers.origin!==`http://127.0.0.1:${process.env.API_PORT||4017}`)return res.status(403).json({error:'Origin not allowed.'});next();});
 const authLimiter=rateLimit({windowMs:15*60*1000,limit:50});
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const string=(x,label,max=190)=>{if(typeof x!=='string'||!x.trim()||x.length>max)fail(`${label} is required (maximum ${max} characters).`);return x.trim();};
 const email=x=>{x=string(x,'Email');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x))fail('Enter a valid email.');return x.toLowerCase();};
-const password=x=>{if(typeof x!=='string'||x.length<10||x.length>128)fail('Password must be 10–128 characters.');return x;};
+const password=x=>{const error=passwordError(x);if(error)fail(error);return x;};
 async function session(c,res,id,remember=false){const token=crypto.randomBytes(32).toString('hex');await c.query('INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL ? DAY))',[hash(token),id,remember?30:1]);res.cookie('ss_session',token,{httpOnly:true,sameSite:'strict',secure:process.env.NODE_ENV==='production',maxAge:(remember?30:1)*86400000,path:'/'});}
 app.get('/api/health',async(req,res)=>{await pool.query('SELECT 1');res.json({status:'ok',database:'MySQL',port:Number(process.env.DB_PORT||3317)});});
 app.post('/api/auth/login',authLimiter,async(req,res)=>{const [u]=await rows(pool,'SELECT * FROM users WHERE email=? AND deleted_at IS NULL',[email(req.body.email)]);if(!u||!await bcrypt.compare(req.body.password||'',u.password_hash))fail('Email or password is incorrect.',401);await session(pool,res,u.id,!!req.body.remember);res.json({ok:true});});
