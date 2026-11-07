@@ -1,6 +1,6 @@
 import {rows,tx,fail,audit} from './db.js';
 import crypto from 'node:crypto';
-export const defaults={cancellation_hours:12,no_show_forfeit:true,booking_window_days:30,waitlist_offer_minutes:60,checkin_before_minutes:30,checkin_after_minutes:60,rentals_enabled:true,retreats_enabled:true,timezone:'Asia/Manila',currency:'PHP'};
+export const defaults={cancellation_hours:12,no_show_forfeit:true,booking_window_days:30,waitlist_offer_minutes:60,checkin_before_minutes:30,checkin_after_minutes:60,rentals_enabled:true,retreats_enabled:true,timezone:'Asia/Manila',time_format:'12',currency:'PHP'};
 export const utc=v=>{const d=new Date(v);if(!Number.isFinite(+d))fail('A valid date and time is required.');return d.toISOString().slice(0,19).replace('T',' ');};
 export async function owned(c,table,id,u,lock=false){const [r]=await rows(c,`SELECT * FROM ${table} WHERE id=? AND studio_id=? ${lock?'FOR UPDATE':''}`,[id,u.studio_id]);if(!r)fail('Record not found.',404);if(u.role!=='Admin'&&u.role!=='Member'){
  let branch=r.branch_id;if(table==='branches')branch=r.id;

@@ -1,52 +1,141 @@
 # StudioSync
 
-A web platform for boutique fitness studios. React 19 + TypeScript + Vite + Tailwind CSS 4 on the frontend; Express 5 and MySQL 8 on the backend. The interface uses the updated bright off-white and warm sage palette, with terracotta and ochre accents using Inter throughout.
+StudioSync has three parts that need to run: the **database** stores your records, the **backend** handles login and data, and the **frontend** displays the website.
 
-## Open the application
+## Run the app on this computer
 
-Web interface: **http://127.0.0.1:5177**
-API / database health: **http://127.0.0.1:4017/api/health**
+Use these steps each time you want to work on the app. This computer already has the project and database set up.
 
-Register a studio from the landing page to create an independent workspace, its administrator, and its first branch. Add a room, trainer, class, and plan before scheduling your first class.
+### 1. Open PowerShell in the project folder
 
-## Start again later
+Open a PowerShell terminal and enter:
 
-From PowerShell in this directory:
+```powershell
+cd C:\Users\user\StudioSync
+```
+
+Run all commands below from this folder. Use `npm.cmd` as shown so PowerShell does not block `npm.ps1`.
+
+### 2. Start the database
 
 ```powershell
 npm.cmd run db:start
-npm.cmd run dev
 ```
 
-If StudioSync MySQL is already running, skip `db:start`. The start command refuses to take over an occupied port. Keep the terminal running while using the application. Stop the web/API process with Ctrl+C. To stop only StudioSync's database:
+Wait for **StudioSync MySQL started on port 3317**.
+
+If it says **Port 3317 is already occupied**, the database may already be running. Continue to step 3, then check the backend link in that step. If the health check fails, see Troubleshooting below.
+
+### 3. Start the backend in this terminal
+
+```powershell
+npm.cmd run dev:api
+```
+
+Wait for **StudioSync API: http://127.0.0.1:4017**. Leave this terminal open and running.
+
+Open this link in your browser to check that the backend can reach the database:
+
+**http://127.0.0.1:4017/api/health**
+
+You should see a response containing `"status":"ok"`. This is a status page, not the website.
+
+### 4. Open a second PowerShell terminal and start the frontend
+
+Keep the backend terminal running. In a new terminal, enter:
+
+```powershell
+cd C:\Users\user\StudioSync
+npm.cmd run dev:web
+```
+
+Wait for Vite to show **http://127.0.0.1:5177/**. Leave this terminal open too.
+
+### 5. Open the website
+
+Visit **http://127.0.0.1:5177** in your browser. Log in with your existing account, or select **Register your studio** to create one.
+
+While using the app, keep both terminals open:
+
+| Terminal | What runs there |
+| --- | --- |
+| First terminal | Backend: `npm.cmd run dev:api` |
+| Second terminal | Frontend: `npm.cmd run dev:web` |
+
+The database runs in the background after step 2. You do not need a third terminal for it.
+
+### 6. Stop the app when finished
+
+Press **Ctrl+C** in each of the two running terminals. If asked whether to terminate the batch job, type **Y** and press Enter.
+
+Then stop the database from either terminal:
 
 ```powershell
 npm.cmd run db:stop
 ```
 
-## Dedicated MySQL connection
+Next time, repeat steps 1?5. You do not need to install or set up the database again.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| ?An unexpected server error occurred? when logging in | Open the backend health link from step 3. If it fails, check the backend terminal for the error. If it shows `ECONNREFUSED` on port `3317`, start the database with step 2, then try again. |
+| The website does not open | Make sure the frontend terminal is still running. Use `http://127.0.0.1:5177`. |
+| The backend health page does not open | Start the backend using step 3 and check that terminal for errors. |
+| Port `5177` or `4017` is already in use | Check your other terminals: that part of the app may already be running. Use the existing process, or press Ctrl+C in its terminal before restarting it. |
+| Database start says port `3317` is occupied | Check the backend health page. If it reports `"status":"ok"`, continue using the app. Otherwise, inspect the backend terminal; do not delete or recreate the database. |
+| PowerShell blocks `npm.ps1` | Use `npm.cmd`, not `npm`. |
+
+## First-time setup on another Windows computer only
+
+**Skip this section on this computer.** These commands are for a fresh copy of the project without an existing `.env` or `.runtime/mysql/data` directory.
+
+1. Install Node.js and MySQL Server 8.0.
+2. Open PowerShell in the project folder.
+3. Install the project dependencies:
+
+```powershell
+npm.cmd install
+```
+
+4. Create the local database, then create its tables and sample data:
+
+```powershell
+npm.cmd run db:setup
+npm.cmd run db:seed
+```
+
+Wait for each command to finish before running the next. Setup starts the database for you, so continue with **step 3 (Start the backend)** in the running guide above.
+
+The default MySQL program folder is `C:/Program Files/MySQL/MySQL Server 8.0/bin`. If yours is different, set it before running setup:
+
+```powershell
+$env:MYSQL_BIN = 'C:/your/MySQL/bin'
+```
+
+`db:setup` refuses to overwrite an existing setup. Do not delete `.env` or the database folder to make it run again. `db:seed` creates/migrates tables and adds sample data only to an empty database; it preserves existing studio records.
+
+## Optional reference
+
+You do not need the sections below to start the app.
+
+### Start frontend and backend together
+
+Once the database is running, you can use `npm.cmd run dev` in one terminal instead of the separate backend and frontend commands. Use either this method or the two-terminal method above to avoid port conflicts.
+
+### Database connection details
 
 | Setting | Value |
 | --- | --- |
 | Host | 127.0.0.1 |
-| Port | **3317** |
+| Port | 3317 |
 | Database | studiosync |
 | Application user | studiosync |
-| Password | Generated locally; read `DB_PASSWORD` in `.env` |
+| Password | Generated locally; stored as `DB_PASSWORD` in `.env` |
 | Data and configuration | `.runtime/mysql/` |
 
-The dedicated connection avoids modifying other MySQL instances. StudioSync uses a separate `mysqld.exe` process, independent data directory, generated credentials, loopback binding, and disabled MySQL X Protocol. No Windows service or global database configuration is changed. `.env`, `.runtime/`, and dependencies are excluded from Git. Local recovery credentials remain in the ignored runtime directory and must not be committed.
-
-On a fresh checkout, install Node.js and MySQL 8, then:
-
-```powershell
-npm.cmd install
-npm.cmd run db:setup
-npm.cmd run db:seed
-npm.cmd run dev
-```
-
-`db:setup` runs once and refuses to overwrite an existing `.env` or data directory. Set `MYSQL_BIN` if MySQL's binaries are not in `C:/Program Files/MySQL/MySQL Server 8.0/bin`. `db:seed` creates/migrates schema and seeds only an empty database; it preserves existing studio records.
+This is a separate local MySQL instance. It does not change other MySQL databases or Windows services. Keep `.env` and `.runtime/` private and out of Git.
 
 ## Included workflows
 
