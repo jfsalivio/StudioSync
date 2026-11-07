@@ -238,3 +238,7 @@ td small,.table-footer,.table-footer span,.mono{font-size:11px}
  .landing-footer{padding:26px 20px;gap:16px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Password reset keeps one full-width field and a centered action. */
+.forgot-modal .form-grid{grid-template-columns:minmax(0,1fr)}
+.forgot-modal .form-actions{justify-content:center}
